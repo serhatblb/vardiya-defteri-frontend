@@ -1,0 +1,35 @@
+<div class="page-wrapper">
+  <mat-card class="login-card">
+    <div class="welcome-text">
+      <h1>Vardiya Defteri'ne Hoş Geldiniz 👋</h1>
+      <p>Hesabınıza giriş yapın.</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-content" [class.shake]="shake">
+      <mat-form-field appearance="outline" floatLabel="always" class="full-width">
+        <mat-label>Sicil</mat-label>
+        <input matInput formControlName="sicil" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" floatLabel="always" class="full-width">
+        <mat-label>Şifre</mat-label>
+        <input matInput type="password" formControlName="sifre" required />
+      </mat-form-field>
+
+      <div *ngIf="error" class="error-text">{{ error }}</div>
+
+      <div class="button-wrapper">
+        <button *ngIf="attemptsLeft > 0" mat-raised-button color="primary" class="login-button" type="submit" [disabled]="form.invalid || loading">
+          <ng-container *ngIf="!loading">Giriş Yap</ng-container>
+          <ng-container *ngIf="loading">
+            <mat-progress-spinner diameter="24" mode="indeterminate" color="primary"></mat-progress-spinner>
+          </ng-container>
+        </button>
+
+        <button *ngIf="attemptsLeft <= 0" mat-stroked-button color="accent" class="retry-button" (click)="onReset()">
+          Yeniden Dene
+        </button>
+      </div>
+    </form>
+  </mat-card>
+</div>

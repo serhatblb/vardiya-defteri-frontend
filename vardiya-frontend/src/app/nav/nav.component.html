@@ -1,0 +1,61 @@
+<mat-toolbar class="nav-toolbar mat-elevation-z4">
+  <span class="app-title" routerLink="/dashboard">
+    <mat-icon>menu_book</mat-icon>
+    <span>Vardiya Defteri</span>
+  </span>
+
+  <ng-container *ngIf="isLoggedIn">
+    <nav class="nav-links">
+      <a
+        mat-button
+        routerLink="/users"
+        *ngIf="role === 'SISTEM_YONETICISI'"
+        routerLinkActive="active"
+      >
+        <mat-icon>supervisor_account</mat-icon>
+        Kullanıcı Yönetimi
+      </a>
+      <a
+        mat-button
+        routerLink="/users/new"
+        *ngIf="role === 'SISTEM_YONETICISI'"
+        routerLinkActive="active"
+      >
+        <mat-icon>person_add</mat-icon>
+        Yeni Kullanıcı
+      </a>
+      <a
+        mat-button
+        routerLink="/vardiya-new"
+        *ngIf="role === 'SISTEM_YONETICISI' || role === 'ISLETME_SORUMLUSU'"
+        routerLinkActive="active"
+      >
+        <mat-icon>note_add</mat-icon>
+        Vardiya Notu Ekle
+      </a>
+      <a
+        mat-button
+        routerLink="/vardiya-list"
+        routerLinkActive="active"
+      >
+        <mat-icon>article</mat-icon>
+        Vardiya Notlarım
+      </a>
+      <!-- Ayarlar linki artık nav-links içinde -->
+      <a
+        mat-button
+        routerLink="/settings"
+        *ngIf="role === 'SISTEM_YONETICISI'"
+        routerLinkActive="active"
+      >
+        <mat-icon>settings</mat-icon>
+        Ayarlar
+      </a>
+    </nav>
+
+    <button mat-raised-button (click)="logout()">
+      <mat-icon>logout</mat-icon>
+      Çıkış
+    </button>
+  </ng-container>
+</mat-toolbar>

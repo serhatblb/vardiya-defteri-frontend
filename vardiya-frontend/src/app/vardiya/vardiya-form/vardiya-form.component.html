@@ -1,0 +1,62 @@
+<div class="page-wrapper">
+  <mat-card class="form-container">
+    <h2 class="form-title">Vardiya Notu Oluştur</h2>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+      <div class="form-grid">
+
+        <!-- Adminse kullanıcı seçimi -->
+        <mat-form-field appearance="outline" class="full-width" *ngIf="isAdmin">
+          <mat-label>Kullanıcı</mat-label>
+          <mat-select formControlName="userId" required>
+            <mat-option *ngFor="let user of users" [value]="user.id">
+              {{ user.ad }} {{ user.soyad }} ({{ user.sicil }})
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('userId')?.invalid">Zorunlu</mat-error>
+        </mat-form-field>
+
+        <!-- Vardiya Türü -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Vardiya Türü</mat-label>
+          <mat-select formControlName="vardiyaType" required>
+            <mat-option *ngFor="let t of types" [value]="t">{{ t }}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('vardiyaType')?.invalid">Zorunlu</mat-error>
+        </mat-form-field>
+
+        <!-- Tarih -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Tarih</mat-label>
+          <input matInput type="date" formControlName="tarih" required />
+          <mat-error *ngIf="form.get('tarih')?.invalid">Zorunlu</mat-error>
+        </mat-form-field>
+
+        <!-- Saat -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Saat</mat-label>
+          <input matInput type="time" formControlName="saat" required />
+          <mat-error *ngIf="form.get('saat')?.invalid">Zorunlu</mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Not İçeriği (tam genişlikte) -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Not İçeriği</mat-label>
+        <textarea matInput rows="4" formControlName="notIcerik" required></textarea>
+        <mat-error *ngIf="form.get('notIcerik')?.invalid">Zorunlu</mat-error>
+      </mat-form-field>
+
+      <!-- Hata mesajı -->
+      <div *ngIf="error" class="error-text">{{ error }}</div>
+
+      <!-- Butonlar -->
+      <div class="button-group">
+        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Kaydet</button>
+        <button mat-stroked-button color="accent" routerLink="/vardiya-list" type="button">İptal</button>
+      </div>
+
+    </form>
+  </mat-card>
+</div>

@@ -1,0 +1,141 @@
+<mat-card class="user-list-card">
+  <div class="user-list-wrapper">
+    <h2 class="title">📋 Kullanıcı Raporu</h2>
+
+    <!-- 🎛️ Filtreleme Alanı -->
+    <div class="filter-block">
+      <h3>Filtreleme</h3>
+
+      <!-- 1. Satır: Arama, Rol, Aktif -->
+      <div class="filter-bar">
+        <mat-form-field appearance="outline" class="filter-item">
+          <mat-label>Arama</mat-label>
+          <input matInput placeholder="Ad veya Sicil Ara..." [(ngModel)]="filterText" (input)="onSearchChange(filterText)">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="filter-item">
+          <mat-label>Rol</mat-label>
+          <mat-select [(ngModel)]="selectedRole" (selectionChange)="applyFilters()">
+            <mat-option value="">Tümü</mat-option>
+            <mat-option value="SISTEM_YONETICISI">Sistem Yöneticisi</mat-option>
+            <mat-option value="ISLETME_SORUMLUSU">İşletme Sorumlusu</mat-option>
+            <mat-option value="NORMAL_KULLANICI">Normal Kullanıcı</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div class="filter-item checkbox-wrap">
+          <mat-checkbox [(ngModel)]="showOnlyActive" (change)="applyFilters()">
+            Sadece aktif kullanıcılar
+          </mat-checkbox>
+        </div>
+      </div>
+
+      <!-- 2. Satır: Tarihler + Butonlar -->
+      <div class="filter-row">
+        <mat-form-field appearance="outline" class="filter-item">
+          <mat-label>Başlangıç</mat-label>
+          <input matInput [matDatepicker]="picker1" [(ngModel)]="startDate" (dateChange)="applyFilters()" />
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="filter-item">
+          <mat-label>Bitiş</mat-label>
+          <input matInput [matDatepicker]="picker2" [(ngModel)]="endDate" (dateChange)="applyFilters()" />
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+
+        <div class="filter-actions">
+          <button mat-flat-button color="primary" (click)="applyFilters()">Uygula</button>
+          <button mat-stroked-button color="warn" (click)="clearDates()">Tarihleri Temizle</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 📋 Kullanıcı Tablosu -->
+    <div class="table-block">
+      <h3>Kullanıcı Listesi</h3>
+        <!-- 📄 Export Butonları -->
+      <div class="export-section">
+        <button mat-flat-button color="accent" (click)="excelAktar()">
+          <mat-icon>download</mat-icon> Excel
+        </button>
+        <button mat-flat-button color="warn" (click)="pdfAktar()">
+          <mat-icon>picture_as_pdf</mat-icon> PDF
+        </button>
+      </div>
+      <div class="table-wrapper" id="exportableTable">
+        <table mat-table #table="matTable" matSort [dataSource]="dataSource" class="mat-elevation-z8 user-table">
+
+          <ng-container matColumnDef="sicil">
+            <th mat-header-cell *matHeaderCellDef>Sicil</th>
+            <td mat-cell *matCellDef="let u">{{ u.sicil }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="adSoyad">
+            <th mat-header-cell *matHeaderCellDef>Ad Soyad</th>
+            <td mat-cell *matCellDef="let u">{{ u.ad }} {{ u.soyad }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="unvan">
+            <th mat-header-cell *matHeaderCellDef>Ünvan</th>
+            <td mat-cell *matCellDef="let u">{{ u.unvan }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="unite">
+            <th mat-header-cell *matHeaderCellDef>Ünite</th>
+            <td mat-cell *matCellDef="let u">{{ u.unite }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="rol">
+            <th mat-header-cell *matHeaderCellDef>Rol</th>
+            <td mat-cell *matCellDef="let u">{{ getShortRole(u.rol) }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="hesapAcilisTarihi">
+            <th mat-header-cell *matHeaderCellDef>Açılış</th>
+            <td mat-cell *matCellDef="let u">{{ u.hesapAcilisTarihi | date:'dd.MM.yyyy' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="hesapSilmeTarihi">
+            <th mat-header-cell *matHeaderCellDef>Silinme</th>
+            <td mat-cell *matCellDef="let u">{{ u.hesapSilmeTarihi | date:'dd.MM.yyyy' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="silinmeNedeni">
+            <th mat-header-cell *matHeaderCellDef>Neden</th>
+            <td mat-cell *matCellDef="let u">{{ u.silinmeNedeni || '—' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="sonBlokeTarihi">
+            <th mat-header-cell *matHeaderCellDef>Son Bloke</th>
+            <td mat-cell *matCellDef="let u">{{ u.sonBlokeTarihi | date:'dd.MM.yyyy' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="blokeMi">
+            <th mat-header-cell *matHeaderCellDef>Bloke</th>
+            <td mat-cell *matCellDef="let u">{{ u.blokeMi ? 'Evet' : 'Hayır' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>İşlem</th>
+            <td mat-cell *matCellDef="let u">
+              <button mat-icon-button color="warn" (click)="deleteUser(u)">
+                <mat-icon>delete</mat-icon>
+              </button>
+              <button *ngIf="u.blokeMi" mat-icon-button color="primary" (click)="unblockUser(u)">
+                <mat-icon>lock_open</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{ 'deleted-row': row.hesapSilmeTarihi }"></tr>
+        </table>
+      </div>
+
+      <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+</mat-card>

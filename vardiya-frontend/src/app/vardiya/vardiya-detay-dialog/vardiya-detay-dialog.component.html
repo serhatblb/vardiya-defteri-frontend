@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>Vardiya Notu Detayı</h2>
+
+<mat-dialog-content>
+  <p><strong>Tarih:</strong> {{ data.tarih }}</p>
+  <p><strong>Saat:</strong> {{ data.saat }}</p>
+  <p><strong>Vardiya Türü:</strong> {{ data.vardiyaType }}</p>
+  <p><strong>Ekleyen:</strong> {{ data.adSoyad }}</p>
+  <p><strong>Ünite:</strong> {{ data.unite }}</p>
+  <p><strong>Not:</strong><br>{{ data.notIcerik }}</p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="kapat()">Kapat</button>
+  <button mat-button color="primary" (click)="duzenle()">Düzenle</button>
+  <button mat-button color="warn" (click)="sil()">Sil</button>
+</mat-dialog-actions>

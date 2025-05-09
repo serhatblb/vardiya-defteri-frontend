@@ -66,6 +66,10 @@ export class VardiyaListComponent implements OnInit, AfterViewInit {
   bitisTarihi: Date | null = null;
   kullaniciRol = '';
 
+  pagedData: VardiyaDTO[] = [];
+  pageSize = 5;
+  currentPage = 0;
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('searchInput') searchInput!: any;
@@ -80,36 +84,53 @@ export class VardiyaListComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.kullaniciRol = this.roleSvc.getUserRole() || '';
     this.loadFiltered();
-
-    this.searchTextChanged.pipe(debounceTime(300)).subscribe(() => {
-      this.loadFiltered();
-    });
+    this.searchTextChanged.pipe(debounceTime(300)).subscribe(() => this.loadFiltered());
   }
 
   ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
     setTimeout(() => this.searchInput.nativeElement.focus(), 0);
   }
 
   loadFiltered(): void {
-    const filter = {
-      yazarAdSoyad: this.searchText || null,
-      unite: this.selectedUnit || null,
-      vardiyaType: this.selectedType || null,
-      baslangicTarihi: this.baslangicTarihi ? this.baslangicTarihi.toISOString().split('T')[0] : null,
-      bitisTarihi: this.bitisTarihi ? this.bitisTarihi.toISOString().split('T')[0] : null
-    };
+  const filter = {
+    yazarAdSoyad: this.searchText || null,
+    unite: this.selectedUnit || null,
+    vardiyaType: this.selectedType || null,
+    baslangicTarihi: this.baslangicTarihi ? this.baslangicTarihi.toISOString().split('T')[0] : null,
+    bitisTarihi: this.bitisTarihi ? this.bitisTarihi.toISOString().split('T')[0] : null
+  };
 
-    this.svc.getFiltered(filter).subscribe({
-      next: data => this.dataSource.data = data,
-      error: () => this.error = 'Veri yüklenemedi.'
-    });
+  this.svc.getFiltered(filter).subscribe({
+    next: data => {
+      this.dataSource.data = data;
+      this.pagedData = data; // burada tüm veri geliyor, arama için hazırla
+    },
+    error: () => this.error = 'Veri yüklenemedi.'
+  });
+}
+
+
+  setPage(index: number): void {
+    this.currentPage = index;
+    const start = index * this.pageSize;
+    const end = start + this.pageSize;
+    this.pagedData = this.dataSource.filteredData.slice(start, end);
+  }
+
+  onPageChange(event: any): void {
+    this.pageSize = event.pageSize;
+    this.setPage(event.pageIndex);
   }
 
   onSearchChange(txt: string): void {
-    this.searchTextChanged.next(txt);
-  }
+  const search = txt.trim().toLowerCase();
+  this.pagedData = this.dataSource.data.filter(v =>
+    (v.notIcerik?.toLowerCase().includes(search) || '') ||
+    (v.adSoyad?.toLowerCase().includes(search) || '') ||
+    (v.unite?.toLowerCase().includes(search) || '')
+  );
+}
+
 
   clearAllFilters(): void {
     this.searchText = '';
@@ -121,7 +142,7 @@ export class VardiyaListComponent implements OnInit, AfterViewInit {
   }
 
   excelAktar(): void {
-    const exportData = this.dataSource.data.map(v => ({
+    const exportData = this.dataSource.filteredData.map(v => ({
       Tarih: v.tarih,
       Saat: v.saat,
       'Vardiya Tipi': v.vardiyaType,
@@ -147,7 +168,7 @@ export class VardiyaListComponent implements OnInit, AfterViewInit {
         <br/>
       </div>
     `;
-    const tablo = this.dataSource.data.map(v => `
+    const tablo = this.dataSource.filteredData.map(v => `
       <div style="margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px dashed #ccc;">
         <strong>${v.tarih} - ${v.saat}</strong><br/>
         <strong>Tip:</strong> ${v.vardiyaType}<br/>
@@ -156,7 +177,7 @@ export class VardiyaListComponent implements OnInit, AfterViewInit {
         <strong>Not:</strong> ${v.notIcerik}
       </div>
     `).join('');
-    
+
     const html = `<div style='font-family: Arial;'>${filtreBilgisi}${tablo}</div>`;
 
     html2pdf().from(html).set({
@@ -169,9 +190,7 @@ export class VardiyaListComponent implements OnInit, AfterViewInit {
   }
 
   onEdit(id?: number): void {
-    if (id != null) {
-      this.router.navigate(['/vardiya-form', id]);
-    }
+    if (id != null) this.router.navigate(['/vardiya-form', id]);
   }
 
   onDelete(id?: number): void {
@@ -179,6 +198,7 @@ export class VardiyaListComponent implements OnInit, AfterViewInit {
       this.svc.delete(id).subscribe({
         next: () => {
           this.dataSource.data = this.dataSource.data.filter(v => v.id !== id);
+          this.setPage(this.currentPage);
         },
         error: () => this.error = 'Silme başarısız oldu.'
       });

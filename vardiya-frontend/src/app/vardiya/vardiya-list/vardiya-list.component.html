@@ -7,10 +7,9 @@
         <h3>Filtreleme</h3>
         <div class="filter-bar">
           <mat-form-field appearance="outline" class="filter-item search-box">
-            <mat-label>Ad veya Sicil Ara</mat-label>
-            <input #searchInput matInput placeholder="Ali veya 12345" [(ngModel)]="searchText" (ngModelChange)="onSearchChange($event)">
+            <mat-label>Ad, Ünite veya Not Ara</mat-label>
+            <input #searchInput matInput placeholder="Ali, Enerji, bakım..." [(ngModel)]="searchText" (ngModelChange)="onSearchChange($event)">
           </mat-form-field>
-          
 
           <mat-form-field appearance="outline" class="filter-item">
             <mat-label>Vardiya Tipi</mat-label>
@@ -65,7 +64,7 @@
 
       <!-- 📋 Kart Listesi -->
       <div class="card-list" id="exportableTable">
-        <mat-card class="vardiya-card" *ngFor="let v of dataSource.filteredData" (click)="onRowClick(v)">
+        <mat-card class="vardiya-card" *ngFor="let v of pagedData" (click)="onRowClick(v)">
           <div class="card-header">
             <strong>{{ v.tarih | date:'dd.MM.yyyy' }} - {{ v.saat | date:'HH:mm' }}</strong>
             <span class="vardiya-tip">{{ v.vardiyaType }}</span>
@@ -82,7 +81,6 @@
                 (✏️ Düzenlendi)
               </span>
             </p>
-            
           </div>
         </mat-card>
 
@@ -93,9 +91,11 @@
     </mat-card>
 
     <div class="paginator-wrapper">
-      <mat-paginator [pageSize]="5"
-                     [pageSizeOptions]="[5, 10, 20, 50]"
-                     showFirstLastButtons>
+      <mat-paginator [length]="dataSource.filteredData.length"
+                    [pageSize]="5"
+                    [pageSizeOptions]="[5, 10, 20, 50]"
+                    (page)="onPageChange($event)"
+                    showFirstLastButtons>
       </mat-paginator>
     </div>
   </div>

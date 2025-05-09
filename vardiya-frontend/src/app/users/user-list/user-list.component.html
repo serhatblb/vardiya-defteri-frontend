@@ -66,74 +66,105 @@
         </button>
       </div>
       <div class="table-wrapper" id="exportableTable">
-        <table mat-table #table="matTable" matSort [dataSource]="dataSource" class="mat-elevation-z8 user-table">
+  <table mat-table #table="matTable" matSort [dataSource]="dataSource" class="mat-elevation-z8 user-table">
 
-          <ng-container matColumnDef="sicil">
-            <th mat-header-cell *matHeaderCellDef>Sicil</th>
-            <td mat-cell *matCellDef="let u">{{ u.sicil }}</td>
-          </ng-container>
+    <ng-container matColumnDef="sicil">
+      <th mat-header-cell *matHeaderCellDef>Sicil</th>
+      <td mat-cell *matCellDef="let u">
+        <span matTooltip="{{ u.sicil }}" matTooltipPosition="above">{{ u.sicil }}</span>
+      </td>
+    </ng-container>
 
-          <ng-container matColumnDef="adSoyad">
-            <th mat-header-cell *matHeaderCellDef>Ad Soyad</th>
-            <td mat-cell *matCellDef="let u">{{ u.ad }} {{ u.soyad }}</td>
-          </ng-container>
+    <ng-container matColumnDef="adSoyad">
+      <th mat-header-cell *matHeaderCellDef>Ad Soyad</th>
+      <td mat-cell *matCellDef="let u">
+        <span matTooltip="{{ u.ad }} {{ u.soyad }}" matTooltipPosition="above">{{ u.ad }} {{ u.soyad }}</span>
+      </td>
+    </ng-container>
 
-          <ng-container matColumnDef="unvan">
-            <th mat-header-cell *matHeaderCellDef>Ünvan</th>
-            <td mat-cell *matCellDef="let u">{{ u.unvan }}</td>
-          </ng-container>
+    <ng-container matColumnDef="unvan">
+      <th mat-header-cell *matHeaderCellDef>Ünvan</th>
+      <td mat-cell *matCellDef="let u">
+        <span matTooltip="{{ u.unvan }}" matTooltipPosition="above">{{ u.unvan }}</span>
+      </td>
+    </ng-container>
 
-          <ng-container matColumnDef="unite">
-            <th mat-header-cell *matHeaderCellDef>Ünite</th>
-            <td mat-cell *matCellDef="let u">{{ u.unite }}</td>
-          </ng-container>
+    <ng-container matColumnDef="unite">
+      <th mat-header-cell *matHeaderCellDef>Ünite</th>
+      <td mat-cell *matCellDef="let u">
+        <span matTooltip="{{ u.unite }}" matTooltipPosition="above">{{ u.unite }}</span>
+      </td>
+    </ng-container>
 
-          <ng-container matColumnDef="rol">
-            <th mat-header-cell *matHeaderCellDef>Rol</th>
-            <td mat-cell *matCellDef="let u">{{ getShortRole(u.rol) }}</td>
-          </ng-container>
+    <ng-container matColumnDef="rol">
+      <th mat-header-cell *matHeaderCellDef>Rol</th>
+      <td mat-cell *matCellDef="let u">
+        <span matTooltip="{{ u.rol }}" matTooltipPosition="above">{{ getShortRole(u.rol) }}</span>
+      </td>
+    </ng-container>
 
-          <ng-container matColumnDef="hesapAcilisTarihi">
-            <th mat-header-cell *matHeaderCellDef>Açılış</th>
-            <td mat-cell *matCellDef="let u">{{ u.hesapAcilisTarihi | date:'dd.MM.yyyy' }}</td>
-          </ng-container>
+    <ng-container matColumnDef="hesapAcilisTarihi">
+      <th mat-header-cell *matHeaderCellDef>Açılış</th>
+      <td mat-cell *matCellDef="let u">
+        <span matTooltip="{{ u.hesapAcilisTarihi | date:'dd.MM.yyyy' }}" matTooltipPosition="above">
+          {{ u.hesapAcilisTarihi | date:'dd.MM.yyyy' }}
+        </span>
+      </td>
+    </ng-container>
 
-          <ng-container matColumnDef="hesapSilmeTarihi">
-            <th mat-header-cell *matHeaderCellDef>Silinme</th>
-            <td mat-cell *matCellDef="let u">{{ u.hesapSilmeTarihi | date:'dd.MM.yyyy' }}</td>
-          </ng-container>
+    <ng-container matColumnDef="hesapSilmeTarihi">
+      <th mat-header-cell *matHeaderCellDef>Silinme</th>
+      <td mat-cell *matCellDef="let u">
+        <span matTooltip="{{ u.hesapSilmeTarihi | date:'dd.MM.yyyy' }}" matTooltipPosition="above">
+          {{ u.hesapSilmeTarihi | date:'dd.MM.yyyy' }}
+        </span>
+      </td>
+    </ng-container>
 
-          <ng-container matColumnDef="silinmeNedeni">
-            <th mat-header-cell *matHeaderCellDef>Neden</th>
-            <td mat-cell *matCellDef="let u">{{ u.silinmeNedeni || '—' }}</td>
-          </ng-container>
+    <ng-container matColumnDef="silinmeNedeni">
+      <th mat-header-cell *matHeaderCellDef>Neden</th>
+      <td mat-cell *matCellDef="let u">
+        <span matTooltip="{{ u.silinmeNedeni || '—' }}" matTooltipPosition="above">
+          {{ u.silinmeNedeni || '—' }}
+        </span>
+      </td>
+    </ng-container>
 
-          <ng-container matColumnDef="sonBlokeTarihi">
-            <th mat-header-cell *matHeaderCellDef>Son Bloke</th>
-            <td mat-cell *matCellDef="let u">{{ u.sonBlokeTarihi | date:'dd.MM.yyyy' }}</td>
-          </ng-container>
+    <ng-container matColumnDef="sonBlokeTarihi">
+      <th mat-header-cell *matHeaderCellDef>Son Bloke</th>
+      <td mat-cell *matCellDef="let u">
+        <span matTooltip="{{ u.sonBlokeTarihi | date:'dd.MM.yyyy' }}" matTooltipPosition="above">
+          {{ u.sonBlokeTarihi | date:'dd.MM.yyyy' }}
+        </span>
+      </td>
+    </ng-container>
 
-          <ng-container matColumnDef="blokeMi">
-            <th mat-header-cell *matHeaderCellDef>Bloke</th>
-            <td mat-cell *matCellDef="let u">{{ u.blokeMi ? 'Evet' : 'Hayır' }}</td>
-          </ng-container>
+    <ng-container matColumnDef="blokeMi">
+      <th mat-header-cell *matHeaderCellDef>Bloke</th>
+      <td mat-cell *matCellDef="let u">
+        <span matTooltip="{{ u.blokeMi ? 'Evet' : 'Hayır' }}" matTooltipPosition="above">
+          {{ u.blokeMi ? 'Evet' : 'Hayır' }}
+        </span>
+      </td>
+    </ng-container>
 
-          <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef>İşlem</th>
-            <td mat-cell *matCellDef="let u">
-              <button mat-icon-button color="warn" (click)="deleteUser(u)">
-                <mat-icon>delete</mat-icon>
-              </button>
-              <button *ngIf="u.blokeMi" mat-icon-button color="primary" (click)="unblockUser(u)">
-                <mat-icon>lock_open</mat-icon>
-              </button>
-            </td>
-          </ng-container>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>İşlem</th>
+      <td mat-cell *matCellDef="let u">
+        <button mat-icon-button color="warn" (click)="deleteUser(u)" matTooltip="Sil" matTooltipPosition="above">
+          <mat-icon>delete</mat-icon>
+        </button>
+        <button *ngIf="u.blokeMi" mat-icon-button color="primary" (click)="unblockUser(u)" matTooltip="Blokeyi Kaldır" matTooltipPosition="above">
+          <mat-icon>lock_open</mat-icon>
+        </button>
+      </td>
+    </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{ 'deleted-row': row.hesapSilmeTarihi }"></tr>
-        </table>
-      </div>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{ 'deleted-row': row.hesapSilmeTarihi }"></tr>
+  </table>
+</div>
+
 
       <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
     </div>

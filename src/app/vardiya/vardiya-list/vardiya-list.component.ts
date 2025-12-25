@@ -54,7 +54,7 @@ export class VardiyaListComponent implements OnInit, AfterViewInit {
   displayedColumns = ['tarih', 'saat', 'vardiyaType', 'adSoyad', 'unite', 'notIcerik', 'actions'];
 
   unitList: string[] = [
-    'KOKHANE','YUKSEK_FIRIN','KONVERTOR','HADDEHANE',
+    'KOK','YUKSEK_FIRIN','KONVERTOR','HADDEHANE',
     'ENERJI','LABORATUVAR','BAKIM','MÜHENDİSLİK','KALİTE','INSAN_KAYNAKLARI'
   ];
   selectedUnit: string = '';

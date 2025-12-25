@@ -37,7 +37,7 @@ export class UserFormComponent implements OnInit {
   form!: FormGroup;
   roles: UserRole[] = ['SISTEM_YONETICISI', 'ISLETME_SORUMLUSU', 'NORMAL_KULLANICI'];
   uniteList = [
-    'KOKHANE',
+    'KOK',
     'YUKSEK_FIRIN',
     'KONVERTOR',
     'HADDEHANE',

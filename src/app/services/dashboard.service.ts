@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { DashboardDTO } from '../models/dashboard.model';
+import { DashboardDTO } from '../models/dashboard.model'; // Buradaki yolu kendi klasör yapına göre kontrol et
 
 @Injectable({ providedIn: 'root' })
 export class DashboardService {

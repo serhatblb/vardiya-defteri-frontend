@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface VardiyaDTO {
-
   id?: number;
   userId: number;
   vardiyaType: VardiyaType;
@@ -65,6 +64,4 @@ export class VardiyaService {
   getFiltered(filter: VardiyaFilter): Observable<VardiyaDTO[]> {
     return this.http.post<VardiyaDTO[]>(`${this.base}/rapor`, filter);
   }
-
-  
 }

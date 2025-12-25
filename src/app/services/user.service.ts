@@ -1,4 +1,3 @@
-// src/app/users/services/user.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -43,7 +42,8 @@ export interface UpdateUserDTO {
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  private base = '/api/users';
+  // 🔥 DÜZELTME: Artık direkt Render adresine gidiyor
+  private base = 'https://vardiya-defteri-backend.onrender.com/api/users';
 
   constructor(private http: HttpClient) {}
 
@@ -78,7 +78,6 @@ export class UserService {
     return this.http.patch<void>(`${this.base}/${id}/unblock`, {});
   }
 
-  /** (Hazırlık için yerinde dursun) Aktif kullanıcıyı getirir */
   getCurrentUser() {
     throw new Error('Method not implemented.');
   }

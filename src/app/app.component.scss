@@ -1,0 +1,90 @@
+.common-card {
+    max-width: 1200px;
+    margin: 32px auto;
+    padding: 32px;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  
+    .title {
+      font-size: 22px;
+      color: #1a237e;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+  
+    .filter-bar,
+    .form-wrapper,
+    .table-wrapper {
+      background: #f5f7fa;
+      border: 1px solid #dcdcdc;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.04);
+      margin-bottom: 32px;
+    }
+  
+    .filter-bar,
+    .form-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+  
+      .filter-item, .form-item {
+        flex: 1;
+        min-width: 180px;
+      }
+  
+      mat-form-field {
+        width: 100%;
+        height: 56px;
+      }
+  
+      button {
+        height: 56px;
+        padding: 0 20px;
+      }
+    }
+  
+    .mat-elevation-z2 {
+      border-radius: 8px;
+      overflow: hidden;
+      table-layout: fixed;
+  
+      th, td {
+        text-align: center;
+        font-size: 13px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+  
+      th {
+        background: #e3f2fd;
+        color: #0d47a1;
+        font-weight: bold;
+      }
+  
+      tr:nth-child(even) {
+        background: #f9f9f9;
+      }
+    }
+  
+    .action-buttons {
+      display: flex;
+      gap: 8px;
+  
+      .mat-icon {
+        color: #0d47a1;
+      }
+    }
+  
+    .form-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 24px;
+    }
+  }
+  

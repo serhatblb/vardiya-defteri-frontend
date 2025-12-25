@@ -1,0 +1,102 @@
+<div class="page-wrapper">
+  <div class="content-wrapper">
+    <mat-card class="vardiya-list-card">
+
+      <!-- 🎛️ Filtreleme Alanı -->
+      <div class="filter-block">
+        <h3>Filtreleme</h3>
+        <div class="filter-bar">
+          <mat-form-field appearance="outline" class="filter-item search-box">
+            <mat-label>Ad, Ünite veya Not Ara</mat-label>
+            <input #searchInput matInput placeholder="Ali, Enerji, bakım..." [(ngModel)]="searchText" (ngModelChange)="onSearchChange($event)">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="filter-item">
+            <mat-label>Vardiya Tipi</mat-label>
+            <mat-select [(ngModel)]="selectedType" (selectionChange)="loadFiltered()">
+              <mat-option value="">Hepsi</mat-option>
+              <mat-option value="SAAT_08_16">08-16</mat-option>
+              <mat-option value="SAAT_16_00">16-00</mat-option>
+              <mat-option value="SAAT_00_08">00-08</mat-option>
+              <mat-option value="SAAT_00_12">00-12</mat-option>
+              <mat-option value="SAAT_12_00">12-00</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field *ngIf="kullaniciRol !== 'NORMAL_KULLANICI'" appearance="outline" class="filter-item">
+            <mat-label>Ünite</mat-label>
+            <mat-select [(ngModel)]="selectedUnit" (selectionChange)="loadFiltered()">
+              <mat-option value="">Hepsi</mat-option>
+              <mat-option *ngFor="let u of unitList" [value]="u">{{ u }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="filter-item">
+            <mat-label>Başlangıç</mat-label>
+            <input matInput [matDatepicker]="picker1" [(ngModel)]="baslangicTarihi" (dateChange)="loadFiltered()">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="filter-item">
+            <mat-label>Bitiş</mat-label>
+            <input matInput [matDatepicker]="picker2" [(ngModel)]="bitisTarihi" (dateChange)="loadFiltered()">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+
+          <button mat-flat-button color="warn" (click)="clearAllFilters()">Temizle</button>
+        </div>
+      </div>
+
+      <!-- 📤 Başlık ve Export Butonları -->
+      <div class="table-actions">
+        <h3>Vardiya Notları</h3>
+        <div class="export-buttons">
+          <button mat-flat-button color="accent" (click)="excelAktar()">
+            <mat-icon>download</mat-icon> Excel
+          </button>
+          <button mat-flat-button color="warn" (click)="pdfAktar()">
+            <mat-icon>picture_as_pdf</mat-icon> PDF
+          </button>
+        </div>
+      </div>
+
+      <!-- 📋 Kart Listesi -->
+      <div class="card-list" id="exportableTable">
+        <mat-card class="vardiya-card" *ngFor="let v of pagedData" (click)="onRowClick(v)">
+          <div class="card-header">
+            <strong>{{ v.tarih | date:'dd.MM.yyyy' }} - {{ v.saat | date:'HH:mm' }}</strong>
+            <span class="vardiya-tip">{{ v.vardiyaType }}</span>
+          </div>
+
+          <div class="card-body">
+            <p><strong>Ekleyen:</strong> {{ v.adSoyad }}</p>
+            <p><strong>Ünite:</strong> {{ v.unite }}</p>
+            <p>
+              <strong>Not:</strong> {{ v.notIcerik }}
+              <span *ngIf="v.guncellemeTarihi"
+                    matTooltip="Son düzenleme: {{ v.guncellemeTarihi | date:'short' }}"
+                    style="color: orange; font-size: 12px; margin-left: 6px;">
+                (✏️ Düzenlendi)
+              </span>
+            </p>
+          </div>
+        </mat-card>
+
+        <ng-template #noData>
+          <p style="text-align: center; margin-top: 24px;">Hiç vardiya notu bulunamadı.</p>
+        </ng-template>
+      </div>
+    </mat-card>
+
+    <div class="paginator-wrapper">
+      <mat-paginator [length]="dataSource.filteredData.length"
+                    [pageSize]="5"
+                    [pageSizeOptions]="[5, 10, 20, 50]"
+                    (page)="onPageChange($event)"
+                    showFirstLastButtons>
+      </mat-paginator>
+    </div>
+  </div>
+</div>

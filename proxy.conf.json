@@ -1,0 +1,9 @@
+{
+    "/api": {
+      "target": "https://vardiya-defteri-backend.onrender.com",
+      "secure": false,
+      "changeOrigin": true,
+      "logLevel": "debug"
+    }
+  }
+  

@@ -1,0 +1,67 @@
+<!-- dashboard.component.html -->
+<div class="dashboard-container" *ngIf="data">
+  <div class="dashboard-inner" *ngIf="data">
+  <!-- ➊ Kullanım Kılavuzu -->
+  <div class="intro">
+    <h2>Kullanım Kılavuzu</h2>
+    <p>Bu sayfada programın temel işlevlerini hızlıca görebilir ve kullanabilirsiniz:</p>
+    <ul>
+      <li><strong>Yeni Kullanıcı</strong> (yalnızca Sistem Yöneticisi): Yeni kullanıcı oluşturmanızı sağlar.</li>
+      <li><strong>Vardiya Notu Ekle</strong> (Sistem Yöneticisi & İşletme Yetkilisi): Yeni vardiya notu kaydı açarsınız.</li>
+      <li><strong>Vardiya Notlarım</strong>: Kendi vardiya notlarınızı listeleyebilirsiniz.</li>
+      <li><strong>Bilgi Kartları</strong>: Toplam ve günlük istatistikleri gösterir.</li>
+    </ul>
+  </div>
+
+  <!-- ➋ Ortalanmış işlem butonları -->
+  <div class="actions">
+    <button
+      *ngIf="rol === 'SISTEM_YONETICISI'"
+      mat-flat-button
+      color="primary"
+      (click)="goToUserForm()"
+    >
+      <mat-icon>person_add</mat-icon>
+      Yeni Kullanıcı
+    </button>
+    <button
+      *ngIf="rol === 'SISTEM_YONETICISI' || rol === 'ISLETME_SORUMLUSU'"
+      mat-flat-button
+      color="accent"
+      (click)="navigate()"
+    >
+      <mat-icon>add</mat-icon>
+      Vardiya Notu Ekle
+    </button>
+  </div>
+
+<!-- ➌ Bilgi Kartları -->
+<div class="cards">
+  <div class="card" *ngIf="rol === 'SISTEM_YONETICISI'">
+    <h3>Toplam Kullanıcı</h3>
+    <mat-icon class="icon">groups</mat-icon>
+    <div class="value">{{ data.totalUsers }}</div>
+  </div>
+
+  <div class="card" *ngIf="rol === 'SISTEM_YONETICISI'">
+    <h3>Aktif Kullanıcı</h3>
+    <mat-icon class="icon">person</mat-icon>
+    <div class="value">{{ data.activeUsers }}</div>
+  </div>
+
+  <div class="card">
+    <h3>Toplam Vardiya Notu</h3>
+    <mat-icon class="icon">description</mat-icon>
+    <div class="value">{{ data.totalShifts }}</div>
+  </div>
+
+  <div class="card">
+    <h3>Bugünkü Vardiya Notları</h3>
+    <mat-icon class="icon">today</mat-icon>
+    <div class="value">{{ data.todayShifts }}</div>
+    
+  </div>
+</div>
+
+</div>
+</div>

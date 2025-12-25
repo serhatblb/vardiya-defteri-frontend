@@ -1,0 +1,60 @@
+<div class="settings-wrapper">
+  <!-- Sol Form Alanı -->
+  <mat-card class="settings-form">
+    <h2>Sistem Ayarları</h2>
+
+    <div class="settings-group">
+      <mat-form-field appearance="outline">
+        <mat-label>Maks. Hatalı Giriş Sayısı</mat-label>
+        <input matInput type="number" [(ngModel)]="maxFailedAttempts" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Minimum Şifre Uzunluğu</mat-label>
+        <input matInput type="number" [(ngModel)]="minPasswordLength" />
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" class="save-button" (click)="saveSettings()">
+        <mat-icon>save</mat-icon>
+        Ayarları Kaydet
+      </button>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <h2>Şifre Sıfırlama</h2>
+
+    <div class="reset-group">
+      <mat-form-field appearance="outline">
+        <mat-label>Kullanıcı Seç</mat-label>
+        <mat-select [(ngModel)]="selectedUserId">
+          <mat-option *ngFor="let user of userList" [value]="user.id">
+            {{ user.ad }} {{ user.soyad }} ({{ user.sicil }})
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Yeni Şifre</mat-label>
+        <input matInput [(ngModel)]="defaultPassword" />
+        <button mat-icon-button matSuffix (click)="generateAndFillRandomPassword()" aria-label="Şifre Üret">
+          <mat-icon>shuffle</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <button mat-raised-button color="warn" (click)="resetPassword()" [disabled]="!selectedUserId">
+        <mat-icon>refresh</mat-icon>
+        Şifreyi Sıfırla
+      </button>
+    </div>
+  </mat-card>
+
+  <!-- Sağ Açıklama Alanı -->
+  <div class="settings-info">
+    <h3>Ayar Açıklamaları</h3>
+    <p><strong>Maks. Hatalı Giriş:</strong> Bu sayı aşıldığında kullanıcı hesabı bloke edilir.</p>
+    <p><strong>Minimum Şifre Uzunluğu:</strong> En kısa kabul edilecek şifre karakter sayısıdır.</p>
+    <p><strong>Şifre Sıfırlama:</strong> Seçilen kullanıcı için yeni şifre belirleme işlemidir.</p>
+    <p><strong>Şifre Üret:</strong> Rastgele güçlü bir şifre oluşturur ve alana ekler.</p>
+  </div>
+</div>

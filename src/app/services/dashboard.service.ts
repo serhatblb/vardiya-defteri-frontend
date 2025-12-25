@@ -5,7 +5,7 @@ import { DashboardDTO } from '../models/dashboard.model';
 
 @Injectable({ providedIn: 'root' })
 export class DashboardService {
-  private baseUrl = '/api/dashboard';
+  private baseUrl = 'https://vardiya-defteri-backend.onrender.com/api/dashboard';
 
   constructor(private http: HttpClient) {}
 
